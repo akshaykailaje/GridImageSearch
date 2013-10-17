@@ -57,6 +57,22 @@ public class ImageSearchActivity extends Activity {
 			}
         	
 		});
+        
+        gvImages.setOnScrollListener(new EndlessScrollListener() {
+			
+			@Override
+			public void onLoadMore(int page, int totalItemsCount) {
+				Log.d("DEBUG", "page="+page+", total="+totalItemsCount+", actual="+imageResults.size());
+				if (imageResults.size() <= totalItemsCount) {
+					Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
+					
+					loadImageResults(page);
+				} else {
+					Toast.makeText(getApplicationContext(), "No more results", Toast.LENGTH_LONG).show();
+				}
+				
+			}
+		});
     }
 
 
@@ -73,16 +89,8 @@ public class ImageSearchActivity extends Activity {
     	btnSearch = (Button) findViewById(R.id.btnSearch);
     }
     
-    public void onImageSearch(View v) {
-    	String query = etSearch.getText().toString();
-    	if (query.trim().isEmpty()) {
-    		Toast.makeText(getApplicationContext(), "Please enter search query", Toast.LENGTH_LONG);
-    		return;
-    	}
-    	Toast.makeText(this, "Search text entered: " + query, Toast.LENGTH_SHORT).show();
-    	
-    	String url = UrlBuilder.buildUrl(query, this.options);
-    	Log.d("DEBUG", "url="+url);
+    private void loadImageResults(int page) {
+    	String url = UrlBuilder.buildUrl(etSearch.getText().toString().trim(), options, page);
     	client.get( url, 
     				new JsonHttpResponseHandler() {
     		
@@ -91,7 +99,7 @@ public class ImageSearchActivity extends Activity {
     			JSONArray imageJsonResults = null;
     			try {
     				imageJsonResults = response.getJSONObject("responseData").getJSONArray("results");
-    				imageResults.clear();
+    				//imageResults.clear();
     				imageResults.addAll(ImageResult.fromJSONArray(imageJsonResults));
     				imageAdapter.notifyDataSetChanged();
     			} catch(JSONException e) {
@@ -99,7 +107,24 @@ public class ImageSearchActivity extends Activity {
     				Toast.makeText(getApplicationContext(), "Error retrieving search results", Toast.LENGTH_LONG).show();
     			}
     		}
+    		
+    		@Override
+    		public void onFailure(Throwable e, JSONObject errorResponse) {
+    			Toast.makeText(getApplicationContext(), "Error while requesting results", Toast.LENGTH_LONG).show();
+    		}
+    		
     	});
+    }
+    
+    public void onImageSearch(View v) {
+    	String query = etSearch.getText().toString();
+    	if (query.trim().isEmpty()) {
+    		Toast.makeText(getApplicationContext(), "Please enter search query", Toast.LENGTH_LONG);
+    		return;
+    	}
+    	Toast.makeText(this, "Search text entered: " + query, Toast.LENGTH_SHORT).show();
+    	
+    	loadImageResults(1);
     }
     
     public void onSettingsAction(MenuItem mi) {
