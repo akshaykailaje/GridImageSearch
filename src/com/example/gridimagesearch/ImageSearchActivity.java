@@ -63,14 +63,8 @@ public class ImageSearchActivity extends Activity {
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
 				Log.d("DEBUG", "page="+page+", total="+totalItemsCount+", actual="+imageResults.size());
-				if (imageResults.size() <= totalItemsCount) {
-					Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
-					
-					loadImageResults(page);
-				} else {
-					Toast.makeText(getApplicationContext(), "No more results", Toast.LENGTH_LONG).show();
-				}
-				
+				Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
+				loadImageResults(page);
 			}
 		});
     }
@@ -91,6 +85,7 @@ public class ImageSearchActivity extends Activity {
     
     private void loadImageResults(int page) {
     	String url = UrlBuilder.buildUrl(etSearch.getText().toString().trim(), options, page);
+    	Log.d("DEBUG", "url="+url);
     	client.get( url, 
     				new JsonHttpResponseHandler() {
     		
@@ -98,6 +93,10 @@ public class ImageSearchActivity extends Activity {
     		public void onSuccess(JSONObject response) {
     			JSONArray imageJsonResults = null;
     			try {
+    				if (response.isNull("responseData") || response.getJSONObject("responseData").isNull("results")) {
+    					Toast.makeText(getApplicationContext(), "No more results to load", Toast.LENGTH_LONG).show();
+    					return;
+    				}
     				imageJsonResults = response.getJSONObject("responseData").getJSONArray("results");
     				//imageResults.clear();
     				imageResults.addAll(ImageResult.fromJSONArray(imageJsonResults));
@@ -123,7 +122,7 @@ public class ImageSearchActivity extends Activity {
     		return;
     	}
     	Toast.makeText(this, "Search text entered: " + query, Toast.LENGTH_SHORT).show();
-    	
+    	imageResults.clear();
     	loadImageResults(1);
     }
     

@@ -58,44 +58,6 @@
         android:text="Site Filter"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Spinner
-        android:id="@+id/spImageSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/tvTitle"
-        android:layout_alignTop="@+id/tvTitleImageSize"
-        android:entries="@array/image_size_array" />
-
-    <Spinner
-        android:id="@+id/spColorFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/spImageSize"
-        android:layout_alignTop="@+id/tvColorFilter"
-        android:entries="@array/color_filter_array"
-        android:layout_marginRight="74dp" />
-
-    <Spinner
-        android:id="@+id/spImageType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/spImageSize"
-        android:layout_alignTop="@+id/tvImageType"
-        android:entries="@array/image_type_array"
-        android:layout_marginRight="50dp" />
-
-    <EditText
-        android:id="@+id/etSiteFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/spImageSize"
-        android:layout_alignTop="@+id/tvSiteFilter"
-        android:ems="10"
-        android:hint="Enter website" >
-
-        <requestFocus />
-    </EditText>
-
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
@@ -105,5 +67,41 @@
         android:layout_marginBottom="30dp"
         android:onClick="onOptionsSave"
         android:text="Save" />
+
+    <Spinner
+        android:id="@+id/spImageSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvColorFilter"
+        android:layout_alignParentRight="true"
+        android:entries="@array/image_size_array" />
+
+    <Spinner
+        android:id="@+id/spColorFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvImageType"
+        android:layout_alignParentRight="true"
+        android:entries="@array/color_filter_array" />
+
+    <Spinner
+        android:id="@+id/spImageType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvSiteFilter"
+        android:layout_alignParentRight="true"
+        android:entries="@array/image_type_array" />
+
+    <EditText
+        android:id="@+id/etSiteFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvSiteFilter"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:hint="Enter website" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

@@ -16,11 +16,9 @@ import android.widget.SpinnerAdapter;
 
 public class AdvancedSearchOptionsActivity extends Activity {
 
-	private Spinner spImageSize;
+	//private Spinner spImageSize;
 	private Spinner spColorFilter;
-	private Spinner spImageType;
-	private EditText etSiteFilter;
-	private SearchOptions savedOptions;
+	// private Spinner spImageType;
 	public static final String DEFAULT_VALUE = "All";
 	
 	@Override
@@ -55,6 +53,7 @@ public class AdvancedSearchOptionsActivity extends Activity {
 	public void onOptionsSave(View v) {
 		
 		SearchOptions options = new SearchOptions();
+		Spinner spImageSize = (Spinner) findViewById(R.id.spImageSize);
 		if (spImageSize.getSelectedItem() != null) {
 			options.setImageSize(spImageSize.getSelectedItem().toString());
 		} else {
@@ -66,13 +65,14 @@ public class AdvancedSearchOptionsActivity extends Activity {
 		} else {
 			options.setColorFilter(DEFAULT_VALUE);
 		}
-		
+		Spinner spImageType = (Spinner) findViewById(R.id.spImageType);
 		if (spImageType.getSelectedItem() != null) {
 			options.setImageType(spImageType.getSelectedItem().toString());
 		} else {
 			options.setImageType(DEFAULT_VALUE);
 		}
 		
+		EditText etSiteFilter = (EditText) findViewById(R.id.etSiteFilter);
 		options.setSiteFilter(etSiteFilter.getText().toString());
 		
 		Intent returnIntent = new Intent();
@@ -83,9 +83,12 @@ public class AdvancedSearchOptionsActivity extends Activity {
 	}
 	
 	private void setSavedOptions(SearchOptions options) {
+		Spinner spImageSize = (Spinner) findViewById(R.id.spImageSize);
 		setSpinnerToValue(spImageSize, options.getImageSize());
 		setSpinnerToValue(spColorFilter, options.getColorFilter());
+		Spinner spImageType = (Spinner) findViewById(R.id.spImageType);
 		setSpinnerToValue(spImageType, options.getImageType());
+		EditText etSiteFilter = (EditText) findViewById(R.id.etSiteFilter);
 		etSiteFilter.setText(options.getSiteFilter());
 	}
 	
@@ -101,10 +104,10 @@ public class AdvancedSearchOptionsActivity extends Activity {
 	}
 	
 	private void setupViews() {
-		spImageSize = (Spinner) findViewById(R.id.spImageSize);
+		
 		spColorFilter = (Spinner) findViewById(R.id.spColorFilter);
-		spImageType = (Spinner) findViewById(R.id.spImageType);
-		etSiteFilter = (EditText) findViewById(R.id.etSiteFilter);	
+		
+			
 	}
 
 }
